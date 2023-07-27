@@ -1,3 +1,5 @@
+package com.example.homework_1_month7.presentation
+
 import com.example.homework_1_month7.R
 
 import androidx.appcompat.app.AppCompatActivity
