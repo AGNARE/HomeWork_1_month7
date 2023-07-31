@@ -1,15 +1,11 @@
 package com.example.homework_1_month7.domain.usecases
 
 import com.example.homework_1_month7.domain.CountryRepository
-import com.example.homework_1_month7.domain.mappers.mapToContactEntity
-import com.example.homework_1_month7.domain.models.CountryEntity
+import javax.inject.Inject
 
-class GetCountryUseCase(
+class GetCountryUseCase @Inject constructor(
     private val repository: CountryRepository
 ) {
 
-    fun getCountry(): List<CountryEntity> {
-        return repository.getCountry().mapToContactEntity()
-    }
-
+    fun getCountry() = repository.getCountry()
 }
