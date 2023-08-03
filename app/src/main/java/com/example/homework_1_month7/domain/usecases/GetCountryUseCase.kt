@@ -6,6 +6,5 @@ import javax.inject.Inject
 class GetCountryUseCase @Inject constructor(
     private val repository: CountryRepository
 ) {
-
     fun getCountry() = repository.getCountry()
 }

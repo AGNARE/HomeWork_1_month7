@@ -3,7 +3,7 @@ package com.example.homework_1_month7.data.repositories
 import com.example.homework_1_month7.data.database.dao.Country
 import com.example.homework_1_month7.data.database.dao.CountryDao
 import com.example.homework_1_month7.domain.CountryRepository
-import com.example.homework_1_month7.domain.mappers.mapToContactEntity
+import com.example.homework_1_month7.data.mappers.mapToContactEntity
 import com.example.homework_1_month7.domain.models.CountryEntity
 import com.example.homework_1_month7.domain.utils.Resource
 import kotlinx.coroutines.flow.Flow
@@ -13,6 +13,8 @@ import javax.inject.Inject
 class CountryRepositoriesImpl @Inject constructor(
     private val countryDao: CountryDao
 ) : CountryRepository {
+
+    private lateinit var country: Country
 
     override fun getCountry(): Flow<Resource<List<CountryEntity>>> {
         return flow {
@@ -26,35 +28,35 @@ class CountryRepositoriesImpl @Inject constructor(
         }
     }
 
-    override fun createCountry(country: Country): Flow<Resource<Unit>> {
+    override fun createCountry(countryEntity: CountryEntity): Flow<Resource<CountryEntity>> {
         return flow {
             emit(Resource.Loading())
             try {
                 Resource.Success(countryDao.createCountry(country))
             } catch (e: Exception) {
-                Resource.Error(e.localizedMessage)
+                e.localizedMessage?.let { Resource.Error(it) }
             }
         }
     }
 
-    override fun updateCountry(country: Country): Flow<Resource<Unit>> {
+    override fun updateCountry(countryEntity: CountryEntity): Flow<Resource<CountryEntity>> {
         return flow {
             emit(Resource.Loading())
             try {
                 Resource.Success(countryDao.updateCountry(country))
             } catch (e: Exception) {
-                Resource.Error(e.localizedMessage)
+                e.localizedMessage?.let { Resource.Error(it) }
             }
         }
     }
 
-    override fun deleteCountry(country: Country): Flow<Resource<Unit>> {
+    override fun deleteCountry(countryEntity: CountryEntity): Flow<Resource<CountryEntity>> {
         return flow {
             emit(Resource.Loading())
             try {
                 Resource.Success(countryDao.deleteCountry(country))
-            }catch (e: Exception) {
-                Resource.Error(e.localizedMessage)
+            } catch (e: Exception) {
+                e.localizedMessage?.let { Resource.Error(it) }
             }
         }
     }

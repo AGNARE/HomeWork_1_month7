@@ -1,4 +1,4 @@
-package com.example.homework_1_month7.domain.mappers
+package com.example.homework_1_month7.data.mappers
 
 import com.example.homework_1_month7.data.database.dao.Country
 import com.example.homework_1_month7.domain.models.CountryEntity
