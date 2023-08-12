@@ -1,21 +1,14 @@
 package com.example.homework_1_month7.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import com.example.homework_1_month7.data.database.dao.Country
 import com.example.homework_1_month7.databinding.ActivityMainBinding
-import com.example.homework_1_month7.domain.models.CountryEntity
-import com.example.homework_1_month7.presentation.utils.UIState
+import com.example.homework_1_month7.presentation.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private val viewModel by viewModels<CountryViewModel>()
     private lateinit var binding: ActivityMainBinding
@@ -25,97 +18,81 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         getCountry()
-        val countryEntity = CountryEntity(1,"first","second")
-        createCountry(countryEntity)
-        updateCountry(countryEntity)
-        deleteCountry(countryEntity)
+        val country = Country(1, "first", "second")
+        createCountry(country)
+        updateCountry(country)
+        deleteCountry(country)
     }
 
     private fun getCountry() {
         viewModel.getAllCountry()
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.getAllCountry.collect {
-                    when (it) {
-                        is UIState.Empty -> {}
-                        is UIState.Error -> {
-                            Toast.makeText(this@MainActivity, it.message, Toast.LENGTH_SHORT).show()
-                        }
-                        is UIState.Loading -> {
-                            println("Show progress bar")
-                        }
-                        is UIState.Success -> {
-                            println("Show data in recycler view")
-                        }
-                    }
-                }
+        viewModel.getAllCountry.collectInfo(
+            emptyState = {
+                println("DATA IS EMPTY")
+            },
+            errorState = {
+                println("SOME ERROR: $it")
+            },
+            loadingState = {
+                println("SHOW PROGRESS BAR")
+            },
+            successState = {
+                println("SET LIST ADAPTER: $it")
             }
-        }
+        )
     }
 
-    private fun createCountry(countryEntity: CountryEntity) {
-        viewModel.createAllCountry(countryEntity)
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.createAllCountry.collect {
-                    when (it) {
-                        is UIState.Empty -> {}
-                        is UIState.Error -> {
-                            Toast.makeText(this@MainActivity, it.message, Toast.LENGTH_SHORT).show()
-                        }
-                        is UIState.Loading -> {
-                            println("Show progress bar")
-                        }
-                        is UIState.Success -> {
-                            println("Show data in recycler view")
-                        }
-                    }
-                }
+    private fun createCountry(country: Country) {
+        viewModel.createAllCountry(country)
+        viewModel.createAllCountry.collectInfo(
+            emptyState = {
+                println("DATA IS EMPTY")
+            },
+            errorState = {
+                println("SOME ERROR: $it")
+            },
+            loadingState = {
+                println("SHOW PROGRESS BAR")
+            },
+            successState = {
+                println("SET LIST ADAPTER: $it")
             }
-        }
+        )
     }
 
-    private fun updateCountry(countryEntity: CountryEntity) {
-        viewModel.updateAllCountry(countryEntity)
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.updateAllCountry.collect {
-                    when (it) {
-                        is UIState.Empty -> {}
-                        is UIState.Error -> {
-                            Toast.makeText(this@MainActivity, it.message, Toast.LENGTH_SHORT).show()
-                        }
-                        is UIState.Loading -> {
-                            println("Show progress bar")
-                        }
-                        is UIState.Success -> {
-                            println("Show data in recycler view")
-                        }
-                    }
-                }
+    private fun updateCountry(country: Country) {
+        viewModel.updateAllCountry(country)
+        viewModel.updateAllCountry.collectInfo(
+            emptyState = {
+                println("DATA IS EMPTY")
+            },
+            errorState = {
+                println("SOME ERROR: $it")
+            },
+            loadingState = {
+                println("SHOW PROGRESS BAR")
+            },
+            successState = {
+                println("SET LIST ADAPTER: $it")
             }
-        }
+        )
     }
 
-    private fun deleteCountry(countryEntity: CountryEntity) {
-        viewModel.deleteAllCountry(countryEntity)
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.deleteAllCountry.collect {
-                    when (it) {
-                        is UIState.Empty -> {}
-                        is UIState.Error -> {
-                            Toast.makeText(this@MainActivity, it.message, Toast.LENGTH_SHORT).show()
-                        }
-                        is UIState.Loading -> {
-                            println("Show progress bar")
-                        }
-                        is UIState.Success -> {
-                            println("Show data in recycler view")
-                        }
-                    }
-                }
+    private fun deleteCountry(country: Country) {
+        viewModel.deleteAllCountry(country)
+        viewModel.deleteAllCountry.collectInfo(
+            emptyState = {
+                println("DATA IS EMPTY")
+            },
+            errorState = {
+                println("SOME ERROR: $it")
+            },
+            loadingState = {
+                println("SHOW PROGRESS BAR")
+            },
+            successState = {
+                println("SET LIST ADAPTER: $it")
             }
-        }
+        )
     }
 }
